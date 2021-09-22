@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let appStyle = getComputedStyle(app);
     if (app.innerHTML) return;
     printMetrical();
-    app.addEventListener('click', () => printMetrical())
+    //app.addEventListener('click', () => printMetrical())
 
     function printMetrical() {
         let string = null;
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
             for (let j=0; j<57; j++) string += Math.random().toString(36).substr(2, 1);
             string += '<br>';
         }
-        app.innerHTML = string;
+        //app.innerHTML = string;
         setTimeout(()=>{
             let clientHeight = `height ${appStyle.height} + padding ${appStyle.padding} = clientHeight ${app.clientHeight}px - внутреняя высота`;
             let clientWidth = `width ${appStyle.width} + padding ${appStyle.padding} = clientWidth ${app.clientWidth}px - внутреняя ширина`;
@@ -44,5 +44,35 @@ document.addEventListener('DOMContentLoaded', function() {
             window.scrollTo(12, 12); //прокрутка к определенной точке
         }, 360);
     }
+    window.addEventListener('click', ()=> {
+        getBounding();
+        scrollTo('.app2');
+    });
+    function getBounding() {
+        let rect = app.getBoundingClientRect(); // показывает положение элемента в окне
+        console.log('getBoundingClientRect.Top = ' + rect.top);
+        console.log('getBoundingClientRect.Left = ' + rect.left);
+        console.log('getBoundingClientRect.Width = ' + rect.width);
+        console.log('getBoundingClientRect.Height = ' + rect.height);
+    }
 
+    function scrollTo(selector) {
+        let elem = document.querySelector(selector);
+        const SCROLL_STEP = 64;
+        let direction = elem.getBoundingClientRect().top>0? 1 : -1;
+        let interval = setInterval(()=>{
+            window.scrollBy(0, SCROLL_STEP * direction);
+            let sh = document.body.scrollHeight||document.documentElement.scrollHeight;
+            let st = document.body.scrollTop||document.documentElement.scrollTop||window.pageYOffset;
+            if ((window.innerHeight+st >= sh && direction>0) || (st === 0 && direction<0)) {
+                clearInterval(interval);
+            }
+            let top = elem.getBoundingClientRect().top;
+            if(Math.abs(top)<SCROLL_STEP) {
+                alert('stop1');
+                clearInterval(interval);
+                window.scrollBy(0, elem.getBoundingClientRect().top);
+            }
+        }, 16);
+    }
 })

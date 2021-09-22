@@ -1,0 +1,19 @@
+@import url(reset.css);
+body {
+    /*font-family: 'Helvetica';*/
+    display: flex;
+    flex-direction: column;
+}
+.app {
+    width: 1000px;
+    height: 300px;
+    border: red solid 20px;
+    padding: 40px;
+
+    background-color: darkgrey;
+    margin: 50px;
+
+
+    font-size: 20px;
+    overflow: scroll;
+}
